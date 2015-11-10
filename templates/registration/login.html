@@ -1,0 +1,57 @@
+{% extends "registration/registration_base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Login" %}{% endblock %}
+
+{% block bootstrap_style %}{% endblock %}
+{% block extrahead %}{% endblock %}
+
+
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb_for "django.contrib.auth.views.login" %}
+        {% trans "Login" %}
+    {% endbreadcrumb_for %}
+{% endblock %}
+
+{% block content %}
+{% url 'auth_password_reset' as auth_pwd_reset_url %}
+{% url 'registration_register' as register_url%}
+
+
+<div class="login">
+    <form  method="post" action="{% url 'auth_login' %}" class="onchange_form" data-parsley-validate>
+          {% csrf_token %}
+          <h2>{% trans 'Please, login' %}</h2>
+          <div>
+              <input type="email" class="form-control" maxlength="254" name="username" value="{% if form.username.value %}{{ form.username.value }}{% endif %}" placeholder="{% trans 'Email Address' %}" required="" autofocus="" />
+              {{ form.non_field_errors }}
+          </div>
+          <div>
+               <input type="password" class="form-control" name="password" placeholder="{% trans 'Password' %}" required=""/>
+          </div>
+          <input type="hidden"  name="next"  value="{{ next }}"/>
+            <!--<label class="checkbox">-->
+            <!--<input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me-->
+          <!--</label>-->
+          <button class="submit" type="submit">{% trans 'Login' %}</button>
+           <p>
+                {% blocktrans %}<a href="{{ auth_pwd_reset_url }}">Forgot</a> your password?{% endblocktrans %}
+           </p>
+           <p>
+               {% blocktrans %}<a href="{{ register_url }}">Need an account</a>?{% endblocktrans %}
+           </p>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    {% load staticfiles %}
+    <script src="{% static 'js/parsley/parsley.min.js' %}"></script>
+    {% if LANGUAGE_CODE != 'en' %}
+        {% with 'js/parsley/'|add:LANGUAGE_CODE|add:'.js' as localisation %}
+            <script type="text/javascript" src="{% static  localisation %}"></script>
+        {% endwith %}
+    {% endif %}
+{% endblock %}

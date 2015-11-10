@@ -1,0 +1,17 @@
+{% extends "ads/index.html" %}
+
+{% block body %}
+<div class="container body">
+    {% block header %}
+        {{ block.super }}
+    {% endblock %}
+    <div class="row">
+        <div class="col-md-3">
+            {% block postman_menu %}{% endblock %}
+        </div>
+        <div class="col-md-9">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "ads/profile.html" %}
+{% load i18n humanize %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb_for "ads.views.profile_ads" %}
+        {% trans "My Visits" %}
+    {% endbreadcrumb_for %}
+{% endblock %}
+
+{% block profile_content %}
+    {% if page.object_list %}
+        <div class="list-group">
+
+            {% for obj in page.object_list %}
+                {% if not obj.ad.disabled and obj.ad.blocked == False  %}
+                <a href="{{ obj.ad.get_absolute_url }}" target="_blank" class="list-group-item">
+                    {{ obj.date|naturaltime }}: {{ obj.ad.title }}
+                    <div style="clear:both"></div>
+                </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% if page.has_previous or page.has_next %}
+            <div class="paginator">
+                {% if page.has_previous %}<a href="{% url 'profile_visits' page.previous_page_number %}">{% endif %}&laquo; {% trans 'Previous' %}{% if page.has_previous %}</a>{% endif %}
+                |
+                {% if page.has_next %}<a href="{% url 'profile_visits' page.next_page_number %}">{% endif %}{% trans 'Next' %} &raquo;{% if page.has_next %}</a>{% endif %}
+            </div>
+        {% endif %}
+    {% else %}
+        <p>{% trans 'You have not visited pages yet' %}</p>
+    {% endif %}
+{% endblock %}

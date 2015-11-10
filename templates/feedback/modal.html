@@ -1,0 +1,21 @@
+{% load i18n %}
+<!-- Modal -->
+<div id="feedbackModal">
+    <div class="content">
+        <div class="feedback_header">
+            <button type="button" class="feedbackClose">{% trans 'Close' %}<span >&times;</span></button>
+            <h4 class="title" id="myModalLabel">{% trans 'Send Feedback' %}</h4>
+        </div>
+        <form role="form" method="POST" action="{% url 'feedback' %}" class="onchange_form">{% csrf_token %}
+        <div class="feedback_body">
+            <div>
+                {{ feedback_form.type }}
+            </div>
+            <div>
+                {{ feedback_form.message }}
+            </div>
+            <button class="btn submit">{% trans 'Submit' %}</button>
+        </div>
+        </form>
+    </div>
+</div>

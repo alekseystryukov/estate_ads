@@ -1,0 +1,44 @@
+{% if form.sub_category and is_ajax %}
+    {{ form.sub_category }}
+{% endif %}
+{% if form.price_from %}
+<div>
+    <!--{{ form.price_from.label_tag }}-->
+    {{ form.price_from }}
+    <!--{{ form.price_to.label_tag }}-->
+    {{ form.price_to }}
+</div>
+{% endif %}
+{% if form.rooms_count_from %}
+<div>
+    <!--{{ form.rooms_count_from.label_tag }}-->
+    {{ form.rooms_count_from }}
+    <!--{{ form.rooms_count_to.label_tag }}-->
+    {{ form.rooms_count_to }}
+</div>
+{% endif %}
+{% if form.area_from %}
+<div>
+    <!--{{ form.area_from.label_tag }}-->
+    {{ form.area_from }}
+    <!--{{ form.area_to.label_tag }}-->
+    {{ form.area_to }}
+</div>
+{% endif %}
+{% if form.area_living_from %}
+<div>
+    <!--{{ form.area_living_from.label_tag }}-->
+    {{ form.area_living_from }}
+    <!--{{ form.area_living_to.label_tag }}-->
+    {{ form.area_living_to }}
+</div>
+{% endif %}
+{% if form.floor_from %}
+<div>
+    <!--{{ form.floor_from.label_tag }}-->
+    {{ form.floor_from }}
+    <!--{{ form.floor_to.label_tag }}-->
+    {{ form.floor_to }}
+</div>
+{% endif %}
+<div class="clear"></div>

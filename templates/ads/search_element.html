@@ -1,0 +1,34 @@
+{% load thumbnail %}
+{% load i18n %}
+{% load staticfiles %}
+<li>
+    <a href="{% if no_link %}#{% else %}{{ obj.get_absolute_url }}{% endif %}" title="{{ obj.desc }}">
+        <div >
+            <div class="date">
+                {{ obj.pub_date|date:"H:i" }}<br>
+                {{ obj.pub_date|date:"j E" }}<br>
+                {{ obj.pub_date|date:"Y" }}<br>
+            </div>
+            <div class="logo">
+                {% if obj.logo %}
+                    <img src="{{ obj.logo.file|thumbnail_url:'photo' }}" />
+                {% else %}
+                    <em class="sprite custom_thumb custom_thumb_{{ obj.category_id }}">&nbsp;</em>
+                {% endif %}
+            </div>
+            <div class="content">
+                {{ obj.title }}
+                <p>
+                    {{ obj.district.name }}
+                </p>
+            </div>
+            <div class="cat">
+                {{ obj.category.name }}
+                <br>{% if obj.sub_category %}{{ obj.sub_category.name }}{% endif %}
+            </div>
+            <div class="price">
+                {% if obj.price %}{{ obj.price }}{% endif %}
+            </div>
+        </div>
+    </a>
+</li>

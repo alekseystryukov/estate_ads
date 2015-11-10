@@ -1,0 +1,14 @@
+<div class="ad_breadcrumb">
+    <ul>
+        {% for url, label in breadcrumbs %}
+            <li{% ifequal forloop.counter breadcrumbs_total %} class="active"{% endifequal %}>
+                {% ifnotequal forloop.counter breadcrumbs_total %}
+                    <a href="{{ url }}"><em class="sprite"></em>{{ label|safe }}<em class="sprite"></em></a>
+                {% else %}
+                    <a href="javascript:void(0)"><em class="sprite"></em>{{ label|safe }}</a>
+                {% endifnotequal %}
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="clear"></div>
+</div>

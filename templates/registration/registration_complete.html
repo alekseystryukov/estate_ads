@@ -1,0 +1,26 @@
+{% extends "registration/registration_base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Activation email sent" %}{% endblock %}
+
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb_for "ads.views.post_ad" %}
+        {% trans "Registration" %}
+    {% endbreadcrumb_for %}
+{% endblock %}
+
+{% block content %}
+<div class="onchange_alert alert_success">
+                    {% blocktrans %}An activation email has been sent.
+Please check your email and click on the link to activate your account.{% endblocktrans %}
+</div>
+
+
+{% if mail_inbox %}
+        <br><br>
+<button onclick="window.open('{{ mail_inbox }}')" class="submit"  style="display: block;margin: auto;width: auto;padding: 0 20px;" type="button">{% trans 'Go to Your Email-inbox' %}</button>
+{% endif %}
+
+{% endblock %}
+

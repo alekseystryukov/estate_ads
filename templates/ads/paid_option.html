@@ -1,0 +1,38 @@
+{% extends "ads/detail.html" %}
+{% load thumbnail %}
+{% load i18n %}
+{% load staticfiles %}
+
+
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb option.name "ads.views.paid_option" option.uid ad.id %}
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h4>{{ ad.title }}</h4>
+            {% if ad.imageattachment_set.all %}
+                <img src="{{ ad.imageattachment_set.all.0.file|thumbnail_url:'photo' }}" />
+            {% else %}
+                <img src="{% static 'img/house_humbnail.png' %}" />
+            {% endif %}
+            <h4>{{ option.name }}</h4>
+            <p>{{ option.desc }}</p>
+            {% trans 'Cost' %}: <strong>{{ option.cost }} {% trans 'UAH' %}</strong><br>
+            {% trans 'Your balance' %}: <strong>{% if user.profile.score %}{{ user.profile.score }}{% else %}0{% endif %} {% trans 'UAH' %}</strong>
+            <form style="text-align:center" action="." method="POST">{% csrf_token %}
+                {% if is_available %}
+                <button type="submit" class="btn btn-primary">&nbsp;{% trans 'Add' %}&nbsp;</button>
+                {% else %}
+                <button type="button" class="btn btn-primary" onclick="alert('NON IMPLEMENTED ERROR')">&nbsp;{% trans 'Add funds' %}&nbsp;</button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

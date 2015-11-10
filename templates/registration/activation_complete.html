@@ -1,0 +1,11 @@
+{% extends "registration/registration_base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Activation complete" %}{% endblock %}
+{% block content %}
+{% url 'auth_login' as auth_login_url %}
+{% blocktrans %}
+Thanks, activation complete!
+{% endblocktrans %}
+{% endblock %}
+
+

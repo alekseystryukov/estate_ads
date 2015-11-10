@@ -1,0 +1,24 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+
+
+{% block extrahead %}
+    {{ block.super }}
+    {% load staticfiles %}
+    <script type="text/javascript" src="{% static 'js/jquery-1.9.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/admin/base.js' %}"></script>
+    {% block stylesheets %}<!-- django-filebrowser need this-->
+        {{ block.super }}
+    {% endblock %}
+    {% block javascripts %}
+        {{ block.super }}
+    {% endblock %}
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ _('Estate Ads administration') }}</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

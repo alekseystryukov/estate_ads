@@ -1,0 +1,25 @@
+{% extends 'ads/index.html' %}
+{% load i18n %}
+{% load staticfiles %}
+{% load thumbnail %}
+
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb ad.title "ads.views.activate_ad" ad.id %}
+{% endblock %}
+
+
+{% block content %}
+
+    {% if mail_inbox %}
+    <button onclick="window.open('{{ mail_inbox }}')" style="width: auto;margin: auto;display: block;padding: 0 40px;margin-top: 30px;" class="submit" type="button">{% trans 'Go to Your Email-inbox' %}</button>
+    {% endif %}
+    <div class="listing" style="padding: 28px;margin-top: 30px;">
+        {% with ad as obj %}
+            {% with 1 as no_link %}
+                {% include 'ads/search_element.html' %}
+            {% endwith %}
+        {% endwith %}
+    </div>
+{% endblock %}

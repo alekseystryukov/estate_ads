@@ -1,0 +1,14 @@
+{% extends "ads/index.html" %}
+{% load i18n %}
+{% block body %}
+    <div class="container body">
+        {% block header %}
+            {{ block.super }}
+        {% endblock %}
+        <div class="registration">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

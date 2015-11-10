@@ -1,0 +1,17 @@
+{% extends "email_templates/base_template.html" %}
+{% load staticfiles %}
+{% load i18n %}
+{% block extra_header %}
+<script type="text/javascript" src="{% static 'tiny_mce/tiny_mce_popup.js' %}"></script>
+<script type="text/javascript" src="{% static 'tiny_mce/plugins/preview/jscripts/embed.js' %}"></script>
+<script type="text/javascript"><!--
+document.write('<base href="' + tinyMCEPopup.getWindowArg("base") + '">');
+// -->
+</script>
+{% endblock %}
+{% block content %}
+<div id="content"></div>
+<script type="text/javascript">
+	document.write(tinyMCEPopup.editor.getContent());
+</script>
+{% endblock %}

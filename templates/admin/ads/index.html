@@ -1,0 +1,28 @@
+{% extends "feedback/index.html" %}
+{% load i18n get_blocked_ads %}
+{% block extrahead %}
+    <style type='text/css'>
+    #blocked_ads {float:right;margin-right:-57em;width:18em;position:relative;}
+    </style>
+    {{ block.super }}
+{% endblock %}
+{% block sidebar %}
+    {{ block.super }}
+    <div id="blocked_ads">
+        <div class="module" id="disabled-module">
+            <h2>{% trans 'Blocked Ads' %}</h2>
+            {% get_blocked_ads %}
+            {% if blocked_ads %}
+                <ul class='actionlist'>
+
+                    {% for ad in blocked_ads %}
+                        <li><a href="{% url 'admin:ads_ad_change' ad.id %}">{{ ad.title }}</a> &mdash; {{ ad.pub_date|timesince }} ago</li>
+                    {% endfor %}
+                </ul>
+                <p><a href="{% url 'admin:ads_ad_changelist' %}?blocked__isnull=True">{% trans 'View all' %}</a></p>
+            {% else %}
+                <p><br>{% trans 'All resolved' %}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

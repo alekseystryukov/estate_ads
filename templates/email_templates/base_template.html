@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{% load staticfiles compress %}
+{% load i18n %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width"/>
+        <title>{% trans 'E-mail template' %}</title>
+
+        {% block extra_header %}{% endblock %}
+        <link rel="stylesheet" type="text/css" href="http://{{ site.domain }}{% static 'tiny_mce/themes/advanced/skins/default/content.css' %}" />
+    </head>
+    <body>
+    	<center style="background-color:#f3f3f3">
+        	<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable" style="margin-bottom:80px;">
+            	<tr>
+                	<td align="center" valign="top" id="bodyCell">
+                    	<table border="0" cellpadding="0" cellspacing="0" width="876" id="emailBody">
+							<tr>
+                            	<td align="center" valign="top">
+                                	<div style="margin-top:80px;">
+                                        <img src="http://{{ site.domain }}{% static 'img/email_header.png' %}" alt="{{ site.domain }}" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                            	<td align="left" valign="top" style="background:#ffffff;padding:40px;">
+                                    {% block content %}
+                                	    {{ content }}
+                                    {% endblock %}
+                                </td>
+                            </tr>
+                            <tr>
+                            	<td align="left" valign="top" style="background:#ffffff;padding:16px 48px;border-top:4px solid #f3f3f3;color:#a3a3a3">
+                                    All rights reserved, {% now "Y" %} <a href="http://{{ site.domain }}" style="float:right;color:#576d6e;text-decoration:underline;">{{ site.domain }}</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <div style="height:60px;">&nbsp;</div>
+        </center>
+    </body>
+</html>

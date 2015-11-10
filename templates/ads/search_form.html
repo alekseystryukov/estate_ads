@@ -1,0 +1,55 @@
+{% load i18n %}
+<form id="search_form" method="GET" class="search {% if form.hide_fields %}easySearch{% endif %}" action="{% url 'search' %}" autocomplete="off">
+    <div id="main_filters">
+        <div class="searchRow">
+            <div>
+                <span class="search_q_holder">
+                    <em class="sprite ico_search"></em>
+                    {{ form.q }}
+                </span>
+                <div class="ac-results"></div>
+            </div>
+            {{ form.town }}
+            <div class="clear"></div>
+        </div>
+        {% if not form.hide_fields %}
+            <div class="searchRow">
+                {{ form.district }}
+                {% if form.category %}
+                    {{ form.category }}
+                {% endif %}
+                <div class="clear"></div>
+            </div>
+            <div class="searchRow">
+                <div>
+                    {% for c in form.offering %}
+                        <div class="half">
+                            <label for="id_offering_{{ forloop.counter0 }}" >
+                                <span class="my_radio">{{ c.tag }}</span>
+                                {{ c.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div id="sub_category_wraper">
+                    {% if form.sub_category %}
+                        {{ form.sub_category }}
+                    {% endif %}
+                </div>
+                <div class="clear"></div>
+            </div>
+        {% endif %}
+        <button type="submit" >{% trans "Search" %}</button>
+    </div>
+    <div id="additional_filters">
+        {% include 'ads/additional_filters.html' %}
+    </div>
+    {% if form.category %}
+    <div class="filter_tabs">
+        <input  type="hidden" {% if private != None %}name="private" value="{{ private }}"{% endif %} />
+        <div class="{% if private == None %}tab-active{% endif %}" data-value=""><span>{% trans "All" %} ({{ counts.all }})</span><em class="sprite"></em></div>
+        <div class="{% if private == 'private' %}tab-active{% endif %}" data-value="private" ><em class="sprite"></em>{% trans "Private" %} ({{ counts.private }})<em class="sprite"></em></div>
+        <div class="{% if private == 'business' %}tab-active{% endif %}" data-value="business"><em class="sprite"></em>{% trans "Business" %} ({{ counts.business }})<em class="sprite"></em></div>
+    </div>
+    {% endif %}
+    <div class="clear"></div>
+</form>

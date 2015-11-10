@@ -1,0 +1,14 @@
+{% extends "ads/index.html" %}
+{% load i18n staticfiles %}
+
+{% block title %}{% trans 'Something is wrong but we are solving these problems.' %}{% endblock %}
+
+{% block body %}
+    <div class="errorContent">
+        <div class="errorBlock">
+            <div class="error500">
+                <div>{% trans 'Ehm&hellip;<br> Something is wrong<br> but we are solving these problems.<br> Sorry for inconvenience.' %}</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

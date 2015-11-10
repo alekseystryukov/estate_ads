@@ -1,0 +1,51 @@
+{% extends "ads/index.html" %}
+{% load i18n %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block extrahead %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb_for "ads.views.profile" %}
+        {% trans "Profile" %}
+    {% endbreadcrumb_for %}
+{% endblock %}
+
+{% block content %}
+        <div></div>
+        <div class="row">
+              <div class="col-md-3">
+                  <div class="list-group">
+                      <a href="{% url 'profile' %}" class="list-group-item {% if type == 'info' %}active{% endif %}">
+                          <!--<span class="badge">14</span>-->
+                         {% trans 'Your personal info' %}
+                      </a>
+                      <a href="{% url 'profile_ads' page=1 %}" class="list-group-item {% if type == 'ads_list' %}active{% endif %}">
+                          {% trans 'My ads list' %}
+                      </a>
+                      <a href="{% url 'profile_visits' page=1 %}" class="list-group-item {% if type == 'visits' %}active{% endif %}">
+                          {% trans 'Visited pages' %}
+                      </a>
+                      <a href="{% url 'auth_password_change' %}" class="list-group-item {% if not type %}active{% endif %}">
+                          {% trans 'Change my password' %}
+                      </a>
+                  </div>
+              </div>
+              <div class="col-md-9">
+                  {% block profile_content %}
+                        <form id="profile_update" action="." method="POST" role="form"  data-parsley-validate>{% csrf_token %}
+                            {% for field in form %}
+                            <div class="form-group">
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {{ field.errors }}
+                            </div>
+                            {% endfor %}
+                            <button type="submit" class="btn btn-primary">{% trans 'Save' %}</button>
+                        </form>
+                  {% endblock %}
+              </div>
+        </div>
+{% endblock %}

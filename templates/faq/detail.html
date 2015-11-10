@@ -1,0 +1,23 @@
+{% extends "faq/index.html" %}
+{% load i18n %}
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+    {% if article.id != 1 %}
+        {{ block.super }}
+    {% else %}
+        {% clear_breadcrumbs %}
+        {% breadcrumb_for "/" %}
+            {% trans "Home" %}
+        {% endbreadcrumb_for %}
+    {% endif %}
+    {% breadcrumb article.title "faq_article" article.id %}
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-8 col-md-offset-2">
+        <h1>{{ article.title }}</h1>
+        <p>
+            {{ article.desc|linebreaks }}
+        </p>
+    </div>
+{% endblock %}

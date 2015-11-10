@@ -1,0 +1,119 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:app_list' app_label='ads' %}">{% trans 'Ads' %}</a>
+&rsaquo; <a href="/admin/ads/importfile/">{% trans 'Import files' %}</a>
+&rsaquo; {% trans 'Import' %} "{{ file.file.name }}"
+</div>
+{% endblock %}
+{% block content %}
+<div id="content" class="colM">
+    {% include 'admin/ads/importfile/progress_panel.html' %}
+    <h3>{{ label }}</h3>
+    {% if form %}
+        <form id="match_fields_form" action="" method="POST">{% csrf_token %}
+            {{ form.fieldsets }}
+            {% if form.fieldsets %}
+                {% for fieldset in form.fieldsets %}
+                <fieldset class="module aligned ">
+                    <legend>{{ fieldset.title }}</legend>
+                    {% for field in fieldset %}
+                    <div class="form-group">
+                        <div class="form-row field-file">
+                            <label class="{% if field.field.required %}required{% endif %}">{{ field.label }}</label>
+                            <p>{{ field }} {{ field.errors }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </fieldset>
+                {% endfor %}
+            {% else %}
+                <fieldset class="module aligned ">
+                    {% for field in form %}
+                    <div class="form-group">
+                        <div class="form-row field-file">
+                            <label class="{% if field.field.required %}required{% endif %}">{{ field.label }}</label>
+                            <p>{{ field }} {{ field.errors }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </fieldset>
+            {% endif %}
+            <div class="submit-row">
+                <input type="submit" value="{% trans 'Next' %}" class="default" name="_match">
+            </div>
+        </form>
+
+    {% else %}
+        {% if info.results %}
+            {% for result in info.results %}
+            <a href="{{ result.get_absolute_url }}">{{ result.title }}</a>{% if not forloop.last %},&nbsp;{% endif %}
+            {% endfor %}
+            <div class="submit-row">
+                <p class="deletelink-box"><a href="/admin/ads/importfile/{{ file.id }}/import_data/delete/" class="deletelink">
+                    {% trans 'Delete All' %}
+                </a></p>
+            </div>
+        {% else %}
+        <div class="form-row field-file">
+            <label class="required">{% trans 'Process' %}:</label>
+            <div>0<div style="float:right" id="total_text"></div><div style="clear:both"></div></div>
+            <div id="progress_bar" style="border: 1px solid #ccc; background: #f4f4f4;">
+                <div id="progress" style="width:0;background-color:#299a0b;border-right:1px solid #ccc;text-align:center;">
+                    <span style="width:0;color:#fff;" id="current_text">0</span></div>
+            </div>
+            {% if info.task_id %}
+            <script type="text/javascript">
+                var send = true;
+                setInterval(function(){
+                    if(send){
+                        send = false;
+                        $.get('{% url 'ajax_task_state' %}', {'task_id': '{{ info.task_id }}'},
+                        function(data){
+                            console.log(data);
+                            if(data['result']){
+                                $('#current_text').text(data['result'].current);
+                                $('#total_text').text(data['result'].total);
+                                if(data['result'].total > 0){
+                                    var val = parseInt(100 * data['result'].current / data['result'].total);
+                                    $('#progress').css('width', val + '%');
+                                }
+                            }
+                            if(data['ready']){
+                                if(data['status'] === 'SUCCESS'){
+                                    location.href = '{{ info.curr_url }}';
+                                }else{
+                                    alert(data['status']);
+                                }
+                            }else{
+                                send = true;
+                            }
+                        });
+                    }
+                }, 1000);
+            </script>
+            {% endif %}
+        </div>
+        {% endif %}
+    {% endif %}
+    {% if info %}
+        <h2>{% trans 'File structure' %}</h2>
+        <table>
+            <tr>
+                {% for header in info.headers %}
+                    <th>{{ header }}</th>
+                {% endfor %}
+            </tr>
+            {% for line in info.lines %}
+            <tr class="row{% if forloop.counter|divisibleby:2 %}1{% else %}2{% endif %}">
+                {% for field in line %}
+                    <td>{{ field }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</div>
+{% endblock %}

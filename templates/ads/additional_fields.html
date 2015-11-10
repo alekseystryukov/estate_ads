@@ -1,0 +1,85 @@
+{% if form.sub_category %}
+<div>
+    {{ form.sub_category.label_tag }}
+    {{ form.sub_category }}
+    {{ form.sub_category.errors }}
+</div>
+{% endif %}
+{% if form.price %}
+<div class="price">
+    {{ form.price.label_tag }}
+    {{ form.price }}
+    {{ form.price.errors }}
+    <div class="priceNegotiated">
+        {{ form.price_negotiated.label_tag }}
+        <span class="my_checkbox">
+            {{ form.price_negotiated }}
+        </span>
+        {{ form.price_negotiated.errors }}
+    </div>
+</div>
+{% endif %}
+{% if form.rooms_count %}
+<div>
+    {{ form.rooms_count.label_tag }}
+    {{ form.rooms_count }}
+    {{ form.rooms_count.errors }}
+</div>
+{% endif %}
+{% if form.area_living %}
+<div>
+    {{ form.area_living.label_tag }}
+    {{ form.area_living }}
+    {{ form.area_living.errors }}
+</div>
+{% endif %}
+{% if form.area_kitchen %}
+<div>
+    {{ form.area_kitchen.label_tag }}
+    {{ form.area_kitchen }}
+    {{ form.area_kitchen.errors }}
+</div>
+{% endif %}
+{% if form.area_land %}
+<div>
+    {{ form.area_land.label_tag }}
+    {{ form.area_land }}
+    {{ form.area_land.errors }}
+</div>
+{% endif %}
+{% if form.area %}
+<div>
+    {{ form.area.label_tag }}
+    {{ form.area }}
+    {{ form.area.errors }}
+</div>
+{% endif %}
+{% if form.floor %}
+<div>
+    {{ form.floor.label_tag }}
+    {{ form.floor }}
+    {{ form.floor.errors }}
+</div>
+{% endif %}
+{% if form.floor_max %}
+<div>
+    {{ form.floor_max.label_tag }}
+    {{ form.floor_max }}
+    {{ form.floor_max.errors }}
+</div>
+{% endif %}
+{% if form.free_from %}
+<div>
+    {{ form.free_from.label_tag }}
+    <div id="datepicker"></div>
+    {{ form.free_from }}
+    {{ form.free_from.errors }}
+</div>
+{% endif %}
+{% if form.distance %}
+<div>
+    {{ form.distance.label_tag }}
+    {{ form.distance }}
+    {{ form.distance.errors }}
+</div>
+{% endif %}

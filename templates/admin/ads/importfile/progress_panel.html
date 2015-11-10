@@ -1,0 +1,37 @@
+{% load i18n %}
+<h1>{% trans 'Import Process' %}</h1>
+<div>
+    {% if info.stage != 1 %}
+    <a href="{{ info.curr_url }}?stage=1" >{% trans 'Matching fields' %}</a>
+    {% else %}
+        <b>{% trans 'Matching fields' %}</b>
+    {% endif %}<b>&nbsp;&gt;&nbsp;</b>
+
+    {% if info.max_stage > 1 %}
+        {% if info.stage == 2 %}
+            <b>{% trans 'Compare values' %}</b>
+        {% else %}
+            <a href="{{ info.curr_url }}?stage=2" >{% trans 'Compare values' %}</a>
+        {% endif %}
+    {% else %}
+        {% trans 'Compare values' %}
+    {% endif %}<b>&nbsp;&gt;&nbsp;</b>
+
+
+    {% if info.max_stage > 2 %}
+        {% if info.stage == 3 %}
+            <b>{% trans 'Specify constant fields' %}</b>
+        {% else %}
+            <a href="{{ info.curr_url }}?stage=3" >{% trans 'Specify constants' %}</a>
+        {% endif %}
+    {% else %}
+        {% trans 'Specify constant fields' %}
+    {% endif %}<b>&nbsp;&gt;&nbsp;</b>
+
+    {% if info.stage == 4 %}
+        <b>{% trans 'Create DB items' %}</b>
+    {% else %}
+        {% trans 'Create DB items' %}
+    {% endif %}
+</div>
+

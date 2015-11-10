@@ -1,0 +1,68 @@
+{% extends "registration/registration_base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Register for an account" %}{% endblock %}
+
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb_for "ads.views.post_ad" %}
+        {% trans "Registration" %}
+    {% endbreadcrumb_for %}
+{% endblock %}
+
+{% block content %}
+
+<div class="register">
+    <form  method="post" class="onchange_form" data-parsley-validate>{% csrf_token %}
+        <input type="hidden"  name="next"  value="{{ next }}"/>
+        <fieldset>
+            <div>
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {{ form.email.errors }}
+                {{ form.non_field_errors }}
+            </div>
+            <div>
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+                {{ form.password1.errors }}
+            </div>
+            <div>
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+                {{ form.password2.errors }}
+            </div>
+        </fieldset>
+        <fieldset>
+            <div class="captcha_field">
+                {{ form.captcha.label_tag }}
+                {{ form.captcha }}
+                {{ form.captcha.errors }}
+            </div>
+            <div class="terms_field">
+                {{ form.terms.label_tag }}
+                <span class="my_checkbox">
+                    {{ form.terms }}
+                </span>
+                {{ form.terms.errors }}
+            </div>
+            <button type="submit" class="submit"  >{% trans 'Send activation email' %}</button>
+        </fieldset>
+         <fieldset>
+            <a href="{% url 'django.contrib.auth.views.login' %}">{% blocktrans %}Already has an account?{% endblocktrans %}</a>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+    {{ block.super }}
+    {% load staticfiles %}
+    <script src="{% static 'js/parsley/parsley.min.js' %}"></script>
+    {% if LANGUAGE_CODE != 'en' %}
+        {% with 'js/parsley/'|add:LANGUAGE_CODE|add:'.js' as localisation %}
+            <script type="text/javascript" src="{% static  localisation %}"></script>
+        {% endwith %}
+    {% endif %}
+{% endblock %}

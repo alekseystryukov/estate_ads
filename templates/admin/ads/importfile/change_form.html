@@ -1,0 +1,10 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+{% block submit_buttons_bottom %}
+    {% if not add %}
+        <div class="submit-row">
+            <p style="text-align:center"><a href="{% url 'admin:import_file' adminform.form.instance.id %}">{% trans 'Import Process' %}</a></p>
+        </div>
+    {% endif %}
+    {{ block.super }}
+{% endblock %}

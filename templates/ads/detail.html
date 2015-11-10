@@ -1,0 +1,232 @@
+{% extends "search/search.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load thumbnail %}
+
+
+{% block title %}
+    {{ ad.title }}{% if ad.district %} &bull; {{ ad.district.name }}{% endif %} &bull; {{ ad.town.name }}
+{% endblock %}
+
+
+{% block meta_description %}{{ ad.desc }}{% endblock %}
+
+
+{% load django_bootstrap_breadcrumbs %}
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb ad.title ad.get_absolute_url %}
+{% endblock %}
+
+
+{% block content %}
+<div class="content detail_page">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ ad.title }}</h1>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-9 wide_col">
+            <div class="gray">
+
+                <div class="white_block">{{ ad.town.name }}{% if ad.district %} - {{ ad.district.name }}{% endif %}</div>
+                <div class="white_block">{{ ad.category }}{% if ad.sub_category %} / {{ ad.sub_category }}{% endif %}</div>
+
+                <div style="padding-left:30px">
+                    <p>{% trans 'Added' %}: {{ ad.pub_date }}
+                        {% if ad.mod_date %}
+                        <br>{% trans 'Last modified' %}: {{ ad.mod_date }}
+                        {% endif %}
+                    </p>
+                </div>
+
+
+                {% with ad.images as images %}
+                    {% if images %}
+                    <div id="gallery">
+                        <div id="gallery_output">
+                            {% for img in images %}
+                            <img id="img{{ img.id }}" src="{{ MEDIA_URL }}{{ img.file }}" />
+                            {% endfor %}
+                        </div>
+                        <div id="gallery_nav">
+                            {% for img in images %}
+                            <a rel="img{{ img.id }}" {% if forloop.counter == 1 %}class="active"{% endif %} href="javascript:void(0);"><img src="{{ img.file|thumbnail_url:'gallery_thumb' }}" /></a>
+                            {% endfor %}
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endwith %}
+
+                <div class="added_by_block">
+                    {% if ad.private %}
+                        {% trans 'Added by Owner' %}
+                    {% else %}
+                        {% trans 'Added by Agent' %}
+                    {% endif %}
+                </div>
+                <p>{{ ad.desc }}</p>
+                <!-- other fields -->
+                <div class="table_data">
+                {% if ad.rooms_count %}
+                    <div>{% trans 'Total rooms count' %}: {{ ad.rooms_count }}</div>
+                {% endif %}
+                {% if ad.area_living %}
+                    <div>{% trans 'Living area' %}: {{ ad.area_living }}</div>
+                {% endif %}
+                {% if ad.area_kitchen %}
+                    <div>{% trans 'Kitchen area' %}: {{ ad.area_kitchen }}</div>
+                {% endif %}
+                {% if ad.area_land %}
+                    <div>{% trans 'Land area' %}: {{ ad.area_land }}</div>
+                {% endif %}
+                {% if ad.area %}
+                    <div>{% trans 'Total area' %}: {{ ad.area }}</div>
+                {% endif %}
+                {% if ad.floor %}
+                    <div>{% trans 'Floor' %}: {{ ad.floor }}</div>
+                {% endif %}
+                {% if ad.floor_max %}
+                    <div>{% trans 'Floors count in building' %}: {{ ad.floor_max }}</div>
+                {% endif %}
+                {% if ad.buildings_type %}
+                    <div>{% trans 'Building type' %}: {{ ad.buildings_type }}</div>
+                {% endif %}
+                {% if ad.free_from %}
+                    <div>{% trans "It's free from" %}: {{ ad.free_from }}</div>
+                {% endif %}
+                {% if ad.distance %}
+                    <div>{% trans 'Distance from city' %}: {{ ad.distance }}</div>
+                {% endif %}
+                    <hr class="clear"/>
+                </div>
+
+                {% for vid in ad.videos %}
+                   <div id="video_{{ vid.id }}" class="video" data-type="{{ vid.type }}" data-url="{{ MEDIA_URL }}{{ vid.file }}">
+                       <video controls>
+                            <source src="{{ MEDIA_URL }}{{ vid.file }}" type="{{ vid.type }}">
+                            <p>{% blocktrans %}Your browser doesn't support Flash or HTML5 for this video,
+                                but you can download it by <a href="{{ MEDIA_URL }}{{ vid.file }}">this link.</a>{% endblocktrans %}</p>
+                       </video>
+                   </div>
+                {% endfor %}
+
+            </div>
+
+            {% with ad.similars as sim_ads %}
+                {% if sim_ads %}
+                <div class="similarItems">
+                    <div>{% trans 'Similar ads' %}</div>
+                    {% for similar in sim_ads %}
+                        <a  href="{{ similar.get_absolute_url }}" target="_blank">
+                            {% if similar.imageattachment_set.all %}
+                                <img src="{{ similar.imageattachment_set.all.0.file|thumbnail_url:'photo' }}" />
+                            {% else %}
+                                <em class="sprite catIcon{{ similar.category_id }}">&nbsp;</em>
+                            {% endif %}
+                            {{ similar.desc|truncatewords:26 }}
+                        </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endwith %}
+
+
+            {% if history %}
+            <div class="similarItems">
+                <div>{% trans 'Your recently viewed' %}</div>
+                {% for item in history %}
+                <a  href="{{ item.get_absolute_url }}" target="_blank">
+                    {% with item.imageattachment_set.all as images %}
+                        {% if images %}
+                            <img src="{{ images.0.file|thumbnail_url:'photo' }}" />
+                        {% else %}
+                            <em class="sprite catIcon{{ item.category_id }}">&nbsp;</em>
+                        {% endif %}
+                    {% endwith %}
+                    {{ item.desc|truncatewords:26 }}
+                </a>
+                {% endfor %}
+                <a class="see_more" href="{% url 'profile_visits' 1 %}">{% trans 'See more' %}</a>
+            </div>
+            {% endif %}
+
+        </div>
+        <div class="col-md-3 tall_col">
+            <div class="clear20" style="text-align:right">
+                {% if ad.price_negotiated %}{% trans 'Price is negotiated' %}{% endif %}
+            </div>
+            {% if ad.price != None %}
+                <div class="price">{{ ad.price }}</div>
+            {% endif %}
+
+            {% if ad.user_id %}
+                <p class="user">{% trans 'Added by' %}: <i>{{ ad.user.get_full_name }}</i></p>
+            {% endif %}
+
+            {% if ad.phone %}
+            <div class="info"><em class="sprite ico_phone"></em><strong>{{ ad.phone }}</strong></div>
+            {% endif %}
+
+            {% if ad.user.is_active %}
+            <div class="info"><em class="sprite ico_pencil"></em><a href="{% url 'postman_contact' ad.id %}">write to {{ ad.user.get_full_name }}</a></div>
+            {% endif %}
+
+
+            <div class="info"><em class="sprite ico_eye"></em>{% trans 'Times viewed' %}: {{ ad.viewed }}</div>
+
+            {% if  ad.user_id and ad.user == user %}
+                <a href="{% url 'edit_ad' ad.id %}" style="width:100%" class="button edit_ad_button">{% trans 'Edit' %}</a>
+            {% endif %}
+
+
+
+
+            {% if 0 %}
+                <p>
+                {% if not ad.premium_to or ad.premium_to.time < today.time %}
+                    <button onclick="location.href='{% url 'paid_option' 'premium_status' ad.id  %}'" style="width:100%" class="btn btn-primary" type="button">{% trans 'Add Premium Status' %}</button>
+                {% else %}
+                    {% trans 'Has Premium status' %}
+                {% endif %}
+                </p>
+                <p>
+                {% if ad.order_date.time < today.time %}
+                    <button onclick="location.href='{% url 'paid_option' 'vip_status' ad.id  %}'" style="width:100%" class="btn btn-primary" type="button">{% trans 'Add Vip Status' %}</button>
+                {% else %}
+                    {% trans 'Has VIP status' %}
+                {% endif %}
+                </p>
+            {% endif %}
+
+
+            {% if ad.lat and ad.lon %}
+            <div style="height:200px" id="static_map" data-lat="{{ ad.lat }}" data-lon="{{ ad.lon }}"></div>
+            {% endif %}
+            <div class="accordion">
+                <div class="acc_header">{% trans 'Send to a Friend' %}</div>
+                <div class="acc_body">
+                    <form  id="sendToFriendForm">{% csrf_token %}
+                        {{ send_form.email }}
+                        {{ send_form.ad_id }}
+                        {{ send_form.email.errors }}
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    {% load staticfiles %}
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+    <script type="text/javascript" src="{% static 'js/jwplayer/jwplayer.js' %}"></script>
+{% endblock %}

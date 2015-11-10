@@ -1,0 +1,60 @@
+{% extends "ads/index.html" %}
+{% load i18n cache %}
+{% load staticfiles %}
+
+{% block post_button %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+        {% include 'ads/search_form.html' %}
+        <table id="placeAdBlock">
+            <tr><td>
+                {% trans 'Quickly, easy & free!' %}
+            </td></tr>
+            <tr><td>
+                <button onclick="location.href = '{% url 'post_ad' %}'" type="button" class="">
+                    {% trans 'Place an ad' %}
+                </button>
+            </td></tr>
+            <tr><td>
+                <ul>
+                    <li>{% trans 'Free & without registration' %}</li>
+                    <li>{% trans 'May contain photo and video within' %}</li>
+                </ul>
+            </td></tr>
+        </table>
+
+        <ul class="categoriesList">
+            {% cache 3600 categories_list TOWN_SELECTED OFFERING_ESTATE LANGUAGE_CODE %}
+            {% for obj in categories %}
+                <li>
+                    <a href="{{ obj.get_absolute_url }}">
+                    <!--<a href="{% url 'category' obj.id 1 %}">-->
+                        <div class="sprite catIcon{{ obj.id }}"></div>
+                        {{ obj.name }}
+                    </a>
+                </li>
+            {% endfor %}
+            {% endcache %}
+        </ul>
+        <div class="clear25"></div>
+
+    <div class="site_desc">
+        {% blocktrans %}
+        <p>Onchange.com.ua is a site of free access to the database of real estate ads. Daily added hundreds of new ads that are assembled by our experts from a variety of sources and serves independent users directly. Now all information in database is fully open and available to all.
+            Post free ads to buy, sell, rent, rent or exchange an apartment, house, land, garage can be easily and quickly with our free ads board.
+        </p>
+        <p> Just click "Post", and you can without registration and free of charge, to add information about your site in just a few clicks. Place in the advertisement  photos, videos and any other relevant information.
+            The purpose of our site - the collection and accounting of the fullest possible information on the sale, purchase, exchange apartments, houses, land and other properties from various sources for you absolutely free.
+        </p>
+        <p>
+            Our team and the site is working for you 24 hours a day.
+            Onchange.com.ua - the most complete professional information about the sale / purchase / delivery / rent an apartment houses, not only in Kharkiv, but also the region.
+        </p>
+        {% endblocktrans %}
+    </div>
+
+
+    <div class="clear25"></div><div class="clear25"></div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "admin/ads/importfile/import.html" %}
+{% load i18n admin_urls %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:app_list' app_label='ads' %}">{% trans 'Ads' %}</a>
+&rsaquo; <a href="/admin/ads/importfile/">{% trans 'Import files' %}</a>
+&rsaquo; <a href="/admin/ads/importfile/{{ file.id }}/import_data/">{% trans 'Import' %} "{{ file.file.name }}"</a>
+&rsaquo; {% trans 'Delete' %}
+</div>
+{% endblock %}
+
+{% block content %}
+    <p>{% blocktrans  %}Are you sure you want to delete all ads?{% endblocktrans %}</p>
+    <form action="" method="post">{% csrf_token %}
+        <div>
+        <input type="hidden" name="post" value="yes" />
+        <input type="submit" value="{% trans "Yes, I'm sure" %}" />
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'ads/index.html' %}
+{% load i18n %}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block title %}{{ cat.name }}{% endblock %}
+{% block meta_description %}{{ site.name }} - {{ cat.name }}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb_for referer.1 %}
+        {{ referer.0 }}
+    {% endbreadcrumb_for %}
+{% endblock %}
+
+{% block content %}
+
+    {% include 'ads/search_form.html' %}
+
+    <ul class="listing">
+    {% for obj in page.object_list %}
+        {% include 'ads/search_element.html' %}
+    {% empty %}
+        <li class="emptyResult">{% trans 'Nothing is found' %}&hellip;<p>{% trans 'Try changing search criteria.' %}</p></li>
+    {% endfor %}
+    </ul>
+
+    {% if page.has_previous or page.has_next %}
+        <div class="paginator">
+            {% if page.has_previous %}<a class="first-child" href="{% url 'category' cat.slug page.previous_page_number %}?{{ params }}">&laquo; {% trans 'Previous' %}</a>{% endif %}
+            {% if page.number > 5 %}
+                <a href="{% url 'category' cat.slug 1 %}?{{ params }}">1</a>&nbsp;..
+            {% endif %}
+            {% for p in page.paginator.page_range %}
+                {% if forloop.counter|add:"-5" < page.number and forloop.counter|add:"5" > page.number %}
+                    {% if forloop.counter == page.number %}
+                        <a href="javascript:void(0)" class="current">{{ p }}</a>
+                    {% else %}
+                        <a href="{% url 'category' cat.slug forloop.counter %}?{{ params }}">{{ p }}</a>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            {% if page.number|add:"4" < page.paginator.num_pages %}
+                ..&nbsp;<a href="{% url 'category' cat.slug page.paginator.num_pages %}?{{ params }}">{{ page.paginator.num_pages }}</a>
+            {% endif %}
+            {% if page.has_next %}<a class="last-child" href="{% url 'category' cat.slug page.next_page_number %}?{{ params }}">{% trans 'Next' %} &raquo;</a>{% endif %}
+        </div>
+    {% endif %}
+
+
+{% endblock %}
