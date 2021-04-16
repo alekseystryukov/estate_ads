@@ -23,7 +23,7 @@ django-bootstrap-breadcrumbs==0.7.0
 django-celery==3.1.16
 django-compressor==1.4
 django-custom-user==0.5
-django-debug-toolbar==1.2.2
+django-debug-toolbar==1.11.1
 django-easymode==1.4b5
 django-filebrowser==3.5.7
 -e git://github.com/smacker/django-filebrowser-no-grappelli.git@911318f0e735ab60485c5783759b3f6a058f2337#egg=django_filebrowser_no_grappelli-master
