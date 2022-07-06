@@ -42,7 +42,7 @@ docutils==0.12
 easy-thumbnails==2.2
 elasticsearch==1.2.0
 flower==0.7.3
-html5lib==0.999
+html5lib==0.999999999
 kombu==3.0.24
 mechanize==0.2.5
 mock==1.0.1
